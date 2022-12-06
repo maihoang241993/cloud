@@ -1,0 +1,28 @@
+## Docker commands used to build the application 
+docker build -t hoangmv2/techtrends:latest .
+
+## Docker commands used to run the application
+docker run -d -p 7111:3111 hoangmv2/techtrends
+
+## Docker commands used to get the application logs
+docker logs f0e29ddc23c1
+
+# f0e29ddc23c1 is container id
+
+## Logs from the container running the TechTrends application
+D:\08.Training\Cloud-Native\cloud>docker ps
+CONTAINER ID   IMAGE                 COMMAND           CREATED         STATUS         PORTS                    NAMES
+f0e29ddc23c1   hoangmv2/techtrends   "python app.py"   7 minutes ago   Up 7 minutes   0.0.0.0:7111->3111/tcp   jolly_bardeen
+
+D:\08.Training\Cloud-Native\cloud>docker logs f0e29ddc23c1
+ * Serving Flask app 'app' (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://172.17.0.2:3111/ (Press CTRL+C to quit)
+172.17.0.1 - - [06/Dec/2022 17:37:01] "GET / HTTP/1.1" 200 -
+172.17.0.1 - - [06/Dec/2022 17:37:01] "GET /static/css/main.css HTTP/1.1" 304 -
+172.17.0.1 - - [06/Dec/2022 17:37:01] "GET /favicon.ico HTTP/1.1" 404 -
