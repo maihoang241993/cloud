@@ -24,7 +24,8 @@ spec:
       - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: techtrends-deployment
-        resources: {{ toYaml .Values.resources | indent 12 }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
         livenessProbe:
           httpGet:
             path:  {{ .Values.livenessProbe }}
