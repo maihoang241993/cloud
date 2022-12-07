@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: techtrends-deployment
+  name: techtrends-deployment
+  namespace: {{ .Values.namespace.name }} 
+spec:
+  replicas: {{ .Values.replicaCount }} 
+  selector:
+    matchLabels:
+      app: techtrends-deployment
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: techtrends-deployment
+    spec:
+      containers:
+      - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: techtrends-deployment
+        resources: {{ toYaml .Values.resources | indent 12 }}
+        livenessProbe:
+          httpGet:
+            path:  {{ .Values.livenessProbe }}
+            port: {{ .Values.livenessProbePort }}
+          failureThreshold: 1
+          periodSeconds: 60
+          terminationGracePeriodSeconds: 60
+        readinessProbe:
+          httpGet:
+            path:  {{ .Values.readinessProbe }}
+            port: {{ .Values.readinessProbePort }}
+
+

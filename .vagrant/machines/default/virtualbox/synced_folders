@@ -1,1 +1,1 @@
-{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"/Volumes/DATA/UDACITY/cloud","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}
+{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"D:/08.Training/cloud","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}
