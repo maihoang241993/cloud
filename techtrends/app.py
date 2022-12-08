@@ -9,15 +9,24 @@ from datetime import datetime
  
 db_connection_count = 0
 
-def log(x): 
-    stdout_fileno = sys.stdout
-    now = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
-    stdout_fileno.write('INFO:app:' + str(now) +', ' + str(x) + ' \n')
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("techtrends_log.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger("techtrends-log")
 
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
-    connection = sqlite3.connect('database.db')
+    try:
+        connection = sqlite3.connect('database.db')
+    except:
+        logger.error('Connect database error.')
+
     connection.row_factory = sqlite3.Row
     # session["db_connection_count"] = session["db_connection_count"] + 1
 
@@ -60,16 +69,18 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
-        log('Article not found')
+        logger.error('Article not found')
         return render_template('404.html'), 404
     else:
-        log('Article "' + str(post['title']) + '" retrieved!')
+        logger.info('Article "' + str(post['title']) + '" retrieved!')
         return render_template('post.html', post=post)
 
 
 @app.route('/healthz')
 def healthz():
-    return 'OK'
+    return {
+        "status": 'OK'
+    }
 
 @app.route('/metrics')
 def metrics():
@@ -83,7 +94,7 @@ def metrics():
 # Define the About Us page
 @app.route('/about')
 def about():
-    log('The "About Us" page is retrieved.')
+    logger.info('The "About Us" page is retrieved.')
     return render_template('about.html')
 
 # Define the post creation functionality 
@@ -101,7 +112,7 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-            log('A new article is created. [' + title + ']')
+            logger.info('A new article is created. [' + title + ']')
             return redirect(url_for('index'))
 
     return render_template('create.html')
